@@ -27,5 +27,20 @@ in many cases this won't work very well (for example, if the new
 location performs a redirect, or does not permit access from within a
 frame).
 
+The presenter can specify a presenter password in the *Secret* field;
+this will prevent someone else controlling the presentation knowing
+just the name.
+
+Compatability
+=============
+
+Seems to work with:
+
+- Firefox 25
+- Chrome 31
+- Safari 7
+- Midori 0.5.5
+- 2013.03.30
+
 [remark]: https://github.com/gnab/remark
 
