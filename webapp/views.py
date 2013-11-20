@@ -4,7 +4,7 @@ import bottle
 import zmq
 import gevent
 
-from app import app
+from webapp import app
 
 @app.route('/')
 def index():
