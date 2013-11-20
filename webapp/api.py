@@ -4,7 +4,7 @@ import time
 import json
 
 import bottle
-import zmq
+from zmq import green as zmq
 import gevent
 from gevent import queue
 
