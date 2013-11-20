@@ -7,30 +7,31 @@ $(function () {
 		setTimeout(function() {
 			console.log("polling");
 
-			if (! slideshowID)
-			slideshowID = window.frames[0].slideshowID;
+			if (! slideshowID) {
+				slideshowID = window.frames[0].slideshowID;
+			}
 
-		if (slideshowID) {
-			$.ajax({
-				url: "/show/" + slideshowID + "/poll",
-				type: "GET",
-				success: function(data) {
-					showFrame.src = data['url'];
-					pollInterval=500;
-				},
-				error: function() {
-					pollInterval=2000;
-				},
+			if (slideshowID) {
+				$.ajax({
+					url: "/show/" + slideshowID + "/poll",
+					type: "GET",
+					success: function(data) {
+						showFrame.src = data['url'];
+						pollInterval=500;
+					},
+					error: function() {
+						pollInterval=2000;
+					},
 
-				complete: function () {
-					poll();
-				},
-				dataType: "json",
-				timeout: 30000
-			})
-		} else {
-			poll();
-		}
+					complete: function () {
+						poll();
+					},
+					dataType: "json",
+					timeout: 30000
+				})
+			} else {
+				poll();
+			}
 		}, pollInterval);
 	})();
 

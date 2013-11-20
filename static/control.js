@@ -1,5 +1,4 @@
 var slideshowID;
-var slideshowBaseURL;
 var slideNumber;
 
 function update(url) {
@@ -19,6 +18,11 @@ function update(url) {
 	})
 }
 
+function message(msg) {
+	$('#message').text(msg);
+	$('#message').effect('highlight', {}, 3000);
+}
+
 function registerSlideshow() {
 	slideshowID = $("#showname").val();
 
@@ -30,13 +34,24 @@ function registerSlideshow() {
 			"secret": $("#secret").val(),
 		},
 		success: function(data) {
-			$('#message').text(data['status']);
+			if (data['status'] == "created") {
+				message("Created slideshow " + slideshowID);
+			} else {
+				message("Unexpected error creating " + slideshowID);
+			}
+		},
+		error: function () {
+				message("Failed to create slideshow " + slideshowID);
 		},
 		dataType: "json",
 	})
 }
 function unregisterSlideshow() {
 	slideshowID = $("#showname").val();
+
+	if (! slideshowID) {
+		return;
+	}
 
 	$.ajax({
 		url: "/show/" + slideshowID,
@@ -45,16 +60,28 @@ function unregisterSlideshow() {
 			"secret": $("#secret").val(),
 		},
 		success: function(data) {
-			$('#message').text(data['status']);
+			if (data['status'] == "deleted") {
+				message("Removed slideshow " + slideshowID);
+			} else {
+				message("Unexpected error removing " + slideshowID);
+			}
+		},
+		error: function () {
+			message("Failed to remove slideshow " + slideshowID);
+		},
+		complete: function () {
+			slideshowID = null;
 		},
 		dataType: "json",
 	})
-
-	slideshowID = null;
 }
 
 function resumeSlideshow() {
 	slideshowID = $("#showname").val();
+
+	if (! slideshowID) {
+		return;
+	}
 
 	$.ajax({
 		url: "/show/" + slideshowID,
@@ -63,6 +90,10 @@ function resumeSlideshow() {
 			$('#baseurl').val(data['base']);
 			$('#cururl').val(data['url']);
 			update(data['url']);
+			message("Resumed slideshow " + slideshowID);
+		},
+		error: function () {
+			message("Failed to resume slideshow " + slideshowID);
 		},
 		dataType: "json",
 	})
