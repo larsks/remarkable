@@ -1,0 +1,57 @@
+<!DOCTYPE html >
+<html>
+	<head>            
+		<title>Slideshow control</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    <script src="/static/control.js"></script>
+
+    <style>
+      #message { display: none; }
+    </style>
+	</head>
+	<body>
+<form>
+  <table>
+    <tr>
+      <td><label for="showname">Name:</label></td>
+      <td><input id="showname" name="showname" type="text" size="15"/></td>
+      <td><label for="secret">Secret:</label></td>
+      <td><input id="secret" name="secret" type="text" size="15"/></td>
+    </tr>
+    <tr>
+      <td><label for="baseurl">Base URL:</label></td>
+      <td colspan="3"><input id="baseurl" name="baseurl" type="text" size="80"/></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td colspan="3">
+  <input type="button" id="create" name="create" value="Create"/>
+  <input type="button" id="resume" name="resume" value="Resume"/>
+  <input type="button" id="delete" name="delete" value="Delete"/>
+</td>
+    </tr>
+    <tr>
+      <td><label for="cururl">Current URL:</label></td>
+      <td colspan="3"><input id="cururl" name="cururl" type="text" size="80"/></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td colspan="3">
+  <input type="button" id="sync" name="sync" value="Sync"/>
+  <input type="button" id="start" name="start" value="Go to start"/>
+  <input type="button" id="f1" name="f1" value="+1"/>
+  <input type="button" id="f5" name="f5" value="+5"/>
+  <input type="button" id="b1" name="b1" value="-1"/>
+  <input type="button" id="b5" name="b5" value="-5"/>
+</td>
+    </tr>
+
+  </table>
+</form>
+
+  <div id="message">
+  </div>
+
+	</body>
+</html>
+
