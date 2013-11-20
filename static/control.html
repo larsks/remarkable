@@ -7,6 +7,8 @@
 
     <style>
       #message { display: none; }
+      #baseurl {width: 100%;}
+      #cururl {width: 100%;}
     </style>
 	</head>
 	<body>
@@ -31,13 +33,16 @@
 </td>
     </tr>
     <tr>
+      <td><label for="curslide">Current slide:</label></td>
+      <td><input id="curslide" name="curslide" type="text" size="10"/></td>
       <td><label for="cururl">Current URL:</label></td>
-      <td colspan="3"><input id="cururl" name="cururl" type="text" size="80"/></td>
+      <td><input id="cururl" name="cururl" type="text" size="80"/></td>
     </tr>
     <tr>
       <td></td>
       <td colspan="3">
-  <input type="button" id="sync" name="sync" value="Sync"/>
+  <input type="button" id="sync_slide" name="sync_url" value="Sync slide"/>
+  <input type="button" id="sync_url" name="sync_slide" value="Sync URL"/>
   <input type="button" id="start" name="start" value="Go to start"/>
   <input type="button" id="f1" name="f1" value="+1"/>
   <input type="button" id="f5" name="f5" value="+5"/>

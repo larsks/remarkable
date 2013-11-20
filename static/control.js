@@ -68,13 +68,20 @@ function resumeSlideshow() {
 	})
 }
 
-function syncSlideshow() {
+function syncURL() {
 	slideshowID = $("#showname").val();
 	update($("#cururl").val());
 }
 
+function syncSlide() {
+	baseurl=$("#baseurl").val();
+	slideNumber=Number($("#curslide").val());
+	update(baseurl + "#" + slideNumber);
+}
+
 function gotoStart() {
 	slideNumber=1;
+	$("#curslide").val(slideNumber);
 	baseurl=$("#baseurl").val();
 	update(baseurl + "#1");
 }
@@ -87,6 +94,7 @@ function goForward(num) {
 	}
 
 	slideNumber += num;
+	$("#curslide").val(slideNumber);
 	update(baseurl + "#" + slideNumber);
 }
 
@@ -95,6 +103,7 @@ function goBackward(num) {
 		return;
 
 	slideNumber = Math.max(1, slideNumber-num);
+	$("#curslide").val(slideNumber);
 	update(baseurl + "#" + slideNumber);
 }
 
@@ -103,7 +112,8 @@ $(function() {
 	$('#create').click(registerSlideshow);
 	$('#delete').click(unregisterSlideshow);
 	$('#resume').click(resumeSlideshow);
-	$('#sync').click(syncSlideshow);
+	$('#sync_url').click(syncURL);
+	$('#sync_slide').click(syncSlide);
 	$('#start').click(gotoStart);
 	$('#f1').click(function() {goForward(1);});
 	$('#b1').click(function() {goBackward(1);});
