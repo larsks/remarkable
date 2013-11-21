@@ -1,5 +1,6 @@
 #!/usr/bin/python
 
+import sys
 import time
 import json
 
@@ -8,7 +9,7 @@ from zmq import green as zmq
 import gevent
 from gevent import queue
 
-from webapp import app
+from webapp import app, stats
 
 ctx = zmq.Context()
 shows = {}
@@ -26,28 +27,43 @@ def delete_show(id):
 
     del shows[id]
 
-def query_worker(id, q):
+def query_worker(id, q, rfile):
     global shows
 
     s = ctx.socket(zmq.SUB)
     s.setsockopt(zmq.SUBSCRIBE, '')
     s.connect('inproc://%s' % id)
+    
+    poll = zmq.Poller()
+    poll.register(s, zmq.POLLIN)
+    poll.register(rfile, zmq.POLLERR|zmq.POLLIN)
 
-    while True:
-        msg = s.recv_json()
+    try:
+        stats.polling += 1
 
-        if msg['msg'] == 'close':
-            break
-        elif msg['msg'] != 'update':
-            continue
+        while True:
+            events = dict(poll.poll(5000))
 
-        q.put( json.dumps({
-            'msg': 'update',
-            'id': id,
-            'url': msg['url'],
-            }))
+            if rfile.fileno() in events:
+                break
 
-        break
+            if s in events:
+                msg = s.recv_json()
+
+                if msg['msg'] == 'close':
+                    break
+                elif msg['msg'] != 'update':
+                    continue
+
+                q.put( json.dumps({
+                    'msg': 'update',
+                    'id': id,
+                    'url': msg['url'],
+                    }))
+
+                break
+    finally:
+        stats.polling -= 1
 
     s.close()
     q.put(StopIteration)
@@ -60,7 +76,8 @@ def api_poll_show(id):
         raise bottle.HTTPError(404)
 
     q = queue.Queue()
-    task = gevent.spawn(query_worker, id, q)
+    task = gevent.spawn(query_worker, id, q,
+            bottle.request.environ['wsgi.input'].rfile)
     return q
 
 @app.route('/show/<id>', method='GET')
