@@ -2,6 +2,15 @@
 <html>
 	<head>            
 		<title>Stats</title>
+    <style>
+    table {
+      border-collapse:collapse;
+    }
+    table,th,td {
+      border: 1px solid black;
+      padding: 5px;
+    }
+    </style>
 	</head>
 	<body>
   <h2>General statistics</h2>
@@ -22,7 +31,7 @@
   {% for show in shows.values() %}
     <tr>
       <td>{{show.id}}</td><td>{{show.created}}</td>
-        <td>{{show.base}}</td><td>{{show.url}}</td>
+      <td>{{show.base}}</td><td><a href="{{show.url}}">{{show.url}}</a></td>
     </tr>
   {% endfor %}
   </table>
