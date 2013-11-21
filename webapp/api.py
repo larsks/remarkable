@@ -146,7 +146,10 @@ def api_create_show(id):
 
     shows[id] = {
             'id': id,
-            'created': time.time(),
+            'created_at': time.time(),
+            'created_by': bottle.request.environ.get(
+                'HTTP_X_FORWARDED_FOR',
+                bottle.request.environ.get('REMOTE_ADDR')),
             'base': url,
             'url': url,
             'secret': secret,

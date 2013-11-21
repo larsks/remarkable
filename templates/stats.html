@@ -30,8 +30,9 @@
   <table>
   {% for show in shows.values() %}
     <tr>
-      <td>{{show.id}}</td><td>{{show.created}}</td>
-      <td>{{show.base}}</td><td><a href="{{show.url}}">{{show.url}}</a></td>
+      <td>{{show.id}}</td><td>{{show.created_at}}</td><td>{{show.created_by}}</td>
+      <td><a href="{{show.base}}">{{show.base}}</a></td>
+      <td><a href="{{show.url}}">{{show.url}}</a></td>
     </tr>
   {% endfor %}
   </table>
