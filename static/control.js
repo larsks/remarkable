@@ -83,10 +83,21 @@ function resumeSlideshow() {
 		url: "/show/" + window.parent.slideshowID,
 		type: "GET",
 		success: function(data) {
+			url = data['url'];
+
 			$('#baseurl').val(data['base']);
-			$('#cururl').val(data['url']);
-			update(data['url']);
+			$('#cururl').val(url);
+
+			update(url);
 			message("Resumed slideshow " + window.parent.slideshowID);
+			
+			if (url.indexOf('#') != -1) {
+				curslide = url.split('#')[1];
+				$("#curslide").val(curslide);
+				syncSlide();
+			} else {
+				gotoStart();
+			}
 		},
 		error: function () {
 			message("Failed to resume slideshow " + window.parent.slideshowID);
