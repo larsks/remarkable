@@ -16,7 +16,9 @@ $(function () {
 					url: "/show/" + slideshowID + "/poll",
 					type: "GET",
 					success: function(data) {
-						showFrame.src = data['url'];
+						if (data['msg'] == 'update') {
+							showFrame.src = data['url'];
+						}
 						pollInterval=500;
 					},
 					error: function() {
