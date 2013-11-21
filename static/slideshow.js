@@ -1,7 +1,10 @@
 var pollInterval = 2000;
 
 function update_location(url) {
-	window.f_show.src = url;
+	/* XXX: On Chrome, this works even though
+	 * window.f_show.src generates a SecurityError.
+	 */
+	window.document.getElementById('f_show').src = url;
 
 	if (window.f_location) {
 		$("#location", window.f_location.contentDocument).html(
