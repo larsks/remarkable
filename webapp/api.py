@@ -72,6 +72,15 @@ def query_worker(id, q, rfile):
 def api_poll_show(id):
     global shows
 
+    bottle.response.headers.update({
+            'Access-Control-Allow-Origin': '*',
+            })
+
+    with open('envlog', 'a') as fd:
+        for k,v in bottle.request.headers.items():
+            print >>fd, k, '=', v
+        print >>fd, "=" * 70
+
     if not id in shows:
         raise bottle.HTTPError(404)
 

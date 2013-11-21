@@ -3,7 +3,7 @@
 import os
 import bottle
 
-from webapp import app, static_dir, template_dir, api, stats
+from webapp import app, api, stats, settings
 from webapp.templates import view
 
 @app.route('/stats')
@@ -21,7 +21,7 @@ def default():
 
 @app.route('/static/<path:path>')
 def static_asset(path):
-    return bottle.static_file(path, static_dir)
+    return bottle.static_file(path, settings.static_dir)
 
 @app.route('/watch/<id>')
 @view('slideshow')

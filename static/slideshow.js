@@ -4,6 +4,8 @@ $(function () {
 	var showFrame = document.getElementById("show");
 
 	(function poll() {
+		xurl = pollServer + "/show/" + slideshowID + "/poll"
+
 		setTimeout(function() {
 			console.log("polling");
 
@@ -13,7 +15,7 @@ $(function () {
 
 			if (slideshowID) {
 				$.ajax({
-					url: "/show/" + slideshowID + "/poll",
+					url: xurl,
 					type: "GET",
 					success: function(data) {
 						if (data['msg'] == 'update') {

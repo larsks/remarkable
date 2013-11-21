@@ -6,10 +6,15 @@ import sys
 import jinja2
 from jinja2.loaders import FileSystemLoader
 
-from webapp import template_dir
+from webapp import settings
 
 template_env = jinja2.Environment(
-        loader = FileSystemLoader(template_dir))
+        loader = FileSystemLoader(settings.template_dir))
+
+template_globals = {
+        'settings': settings,
+        'environ': os.environ,
+        }
 
 def view(viewname):
     def view_decorator(f):
@@ -19,10 +24,15 @@ def view(viewname):
             if not isinstance(d, dict):
                 return d
 
-            try:
-                t = template_env.get_template(viewname)
-            except jinja2.TemplateNotFound:
-                t = template_env.get_template('%s.html' % viewname)
+            for name in [viewname, '%s.html' % viewname]:
+                try:
+                    t = template_env.get_template(name,
+                            globals=template_globals)
+                    break
+                except jinja2.TemplateNotFound:
+                    pass
+            else:
+                raise KeyError(viewname)
 
             return t.render(**d)
         return view_wrapper
