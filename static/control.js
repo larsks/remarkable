@@ -33,6 +33,7 @@ function registerSlideshow() {
 		success: function(data) {
 			if (data['status'] == "created") {
 				message("Created slideshow " + window.parent.slideshowID);
+				gotoStart();
 			} else {
 				message("Unexpected error creating " + window.parent.slideshowID);
 			}
