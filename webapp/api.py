@@ -2,6 +2,7 @@
 
 import sys
 import time
+import select
 import json
 
 import bottle
@@ -34,20 +35,19 @@ def query_worker(id, q, rfile):
     s.setsockopt(zmq.SUBSCRIBE, '')
     s.connect('inproc://%s' % id)
     
-    poll = zmq.Poller()
-    poll.register(s, zmq.POLLIN)
-    poll.register(rfile, zmq.POLLERR|zmq.POLLIN)
+    s_fd = s.getsockopt(zmq.FD)
+    r_fd = rfile.fileno()
 
     try:
         stats.polling += 1
 
         while True:
-            events = dict(poll.poll(5000))
+            rlist, wlist, xlist = select.select([r_fd, s_fd], [], [r_fd])
 
-            if rfile.fileno() in events:
+            if r_fd in rlist or r_fd in xlist:
                 break
 
-            if s in events:
+            if s_fd in rlist:
                 msg = s.recv_json()
 
                 if msg['msg'] == 'close':
