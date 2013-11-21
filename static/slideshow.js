@@ -17,6 +17,8 @@ $(function () {
 		xurl = pollServer + "/show/" + slideshowID + "/poll"
 
 		setTimeout(function() {
+			console.log("checking (" + slideshowID + ")");
+
 			if (slideshowID) {
 				console.log("polling");
 
@@ -49,9 +51,11 @@ $(function () {
 	 * might not have loaded yet.  Calling $(window.f_show).load() results
 	 * in an error.  So instead we just wait a second.
 	 */
-	setTimeout(function () {
-		update_location(window.f_show.src);
-	}, 1000);
+	if (slideshowStartURL) {
+		setTimeout(function () {
+			update_location(slideshowStartURL);
+		}, 1000);
+	}
 
 });
 

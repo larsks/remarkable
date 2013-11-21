@@ -6,6 +6,8 @@
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
   <script>
     var slideshowID;
+    var slideshowStartURL;
+
 {% if settings.using_openshift %}
       var pollServer = "http://" + window.location.hostname + ":8000"
 {% else %}

@@ -101,7 +101,10 @@ function syncURL() {
 function syncSlide() {
 	baseurl=$("#baseurl").val();
 	slideNumber=Number($("#curslide").val());
-	update(baseurl + "#" + slideNumber);
+
+	if (slideNumber) {
+		update(baseurl + "#" + slideNumber);
+	}
 }
 
 function gotoStart() {
