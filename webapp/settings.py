@@ -17,3 +17,7 @@ template_dir = os.path.join(
         'templates',
         )
 
+# Set this to False to make the /stats page
+# unavailable.
+enable_stats = True
+

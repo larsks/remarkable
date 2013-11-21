@@ -9,6 +9,9 @@ from webapp.templates import view
 @app.route('/stats')
 @view('stats')
 def show_stats():
+    if not settings.enable_stats:
+        raise HTTPError(403)
+
     return {
             'shows': api.shows,
             'stats': stats,
