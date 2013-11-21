@@ -2,6 +2,7 @@
 <html>
 	<head>            
 		<title>Slideshow</title>
+    <link rel="stylesheet" href="/static/common.css"></link>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
     <script>
       var slideshowID="{{id}}"
@@ -13,8 +14,13 @@
     </script>
     <script src="/static/slideshow.js"></script>
 	</head>
-	<frameset rows="20, 100%">
-    <frame src="{{url}}" id="show">
+	<frameset rows="40px, 100%">
+    <frame src="/static/location.html"
+      id="f_location"
+      scrolling="no"
+      frameborder="0">
+    </frame>
+    <frame src="{{url}}" id="f_show" frameborder="0">
     </frame>
 	</frameset>
 </html>
