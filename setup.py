@@ -1,10 +1,10 @@
 from setuptools import setup
 
-setup(name='YourAppName',
+setup(name='Remarkable',
       version='1.0',
-      description='OpenShift App',
-      author='Your Name',
-      author_email='example@example.com',
-      url='http://www.python.org/sigs/distutils-sig/',
+      description='Shared slideshows',
+      author='Lars Kellogg-Stedman',
+      author_email='lars@oddbit.com',
+      url='http://blog.oddbit.com/",
       install_requires=['gevent', 'bottle', 'pyzmq', 'jinja2'],
      )
