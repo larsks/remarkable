@@ -1,11 +1,8 @@
-var slideshowID;
 var slideNumber;
 
 function update(url) {
-	slideshowID = $("#showname").val();
-
 	$.ajax({
-		url: "/show/" + slideshowID,
+		url: "/show/" + window.parent.slideshowID,
 		type: "PUT",
 		data: {
 			"url": url,
@@ -24,10 +21,10 @@ function message(msg) {
 }
 
 function registerSlideshow() {
-	slideshowID = $("#showname").val();
+	window.parent.slideshowID = $("#showname").val();
 
 	$.ajax({
-		url: "/show/" + slideshowID,
+		url: "/show/" + window.parent.slideshowID,
 		type: "POST",
 		data: {
 			"url": $("#baseurl").val(),
@@ -35,72 +32,69 @@ function registerSlideshow() {
 		},
 		success: function(data) {
 			if (data['status'] == "created") {
-				message("Created slideshow " + slideshowID);
+				message("Created slideshow " + window.parent.slideshowID);
 			} else {
-				message("Unexpected error creating " + slideshowID);
+				message("Unexpected error creating " + window.parent.slideshowID);
 			}
 		},
 		error: function () {
-				message("Failed to create slideshow " + slideshowID);
+				message("Failed to create slideshow " + window.parent.slideshowID);
 		},
 		dataType: "json",
 	})
 }
 function unregisterSlideshow() {
-	slideshowID = $("#showname").val();
-
-	if (! slideshowID) {
+	if (! window.parent.slideshowID) {
 		return;
 	}
 
 	$.ajax({
-		url: "/show/" + slideshowID,
+		url: "/show/" + window.parent.slideshowID,
 		type: "DELETE",
 		data: {
 			"secret": $("#secret").val(),
 		},
 		success: function(data) {
 			if (data['status'] == "deleted") {
-				message("Removed slideshow " + slideshowID);
+				message("Removed slideshow " + window.parent.slideshowID);
 			} else {
-				message("Unexpected error removing " + slideshowID);
+				message("Unexpected error removing " + window.parent.slideshowID);
 			}
 		},
 		error: function () {
-			message("Failed to remove slideshow " + slideshowID);
+			message("Failed to remove slideshow " + window.parent.slideshowID);
 		},
 		complete: function () {
-			slideshowID = null;
+			window.parent.slideshowID = null;
 		},
 		dataType: "json",
 	})
 }
 
 function resumeSlideshow() {
-	slideshowID = $("#showname").val();
+	window.parent.slideshowID = $("#showname").val();
 
-	if (! slideshowID) {
+	if (! window.parent.slideshowID) {
 		return;
 	}
 
 	$.ajax({
-		url: "/show/" + slideshowID,
+		url: "/show/" + window.parent.slideshowID,
 		type: "GET",
 		success: function(data) {
 			$('#baseurl').val(data['base']);
 			$('#cururl').val(data['url']);
 			update(data['url']);
-			message("Resumed slideshow " + slideshowID);
+			message("Resumed slideshow " + window.parent.slideshowID);
 		},
 		error: function () {
-			message("Failed to resume slideshow " + slideshowID);
+			message("Failed to resume slideshow " + window.parent.slideshowID);
 		},
 		dataType: "json",
 	})
 }
 
 function syncURL() {
-	slideshowID = $("#showname").val();
 	update($("#cururl").val());
 }
 
