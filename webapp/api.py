@@ -42,7 +42,7 @@ def query_worker(id, q, rfile):
         stats.polling += 1
 
         while True:
-            events = dict(poll.poll(5000))
+            events = dict(poll.poll())
 
             if rfile.fileno() in events:
                 break
@@ -72,6 +72,8 @@ def query_worker(id, q, rfile):
 def api_poll_show(id):
     global shows
 
+    # On OpenShift this method will be called using an alternate
+    # port so we need to add a CORS header.
     bottle.response.headers.update({
             'Access-Control-Allow-Origin': '*',
             })

@@ -31,7 +31,7 @@ $(function () {
 						poll();
 					},
 					dataType: "json",
-					timeout: 30000
+					timeout: 60000
 				})
 			} else {
 				poll();
