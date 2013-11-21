@@ -3,12 +3,21 @@
 import os
 import bottle
 
-from webapp import app, static_dir, template_dir, api
+from webapp import app, static_dir, template_dir, api, stats
 from webapp.templates import view
 
+@app.route('/stats')
+@view('stats')
+def show_stats():
+    return {
+            'shows': api.shows,
+            'stats': stats,
+            }
+
 @app.route('/')
+@view('home')
 def default():
-    bottle.redirect(app.get_url('present'))
+    return {}
 
 @app.route('/static/<path:path>')
 def static_asset(path):

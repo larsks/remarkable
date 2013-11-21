@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+	<head>            
+		<title>Stats</title>
+	</head>
+	<body>
+  <h2>General statistics</h2>
+  <table>
+    <tr>
+      <td>Greenlets polling:</td>
+      <td>{{stats.polling}}</td>
+    </tr>
+    <tr>
+      <td>Active shows:</td>
+      <td>{{shows|length}}</td>
+    </tr>
+  </table>
+
+  <h2>Shows</h2>
+
+  <table>
+  {% for show in shows.values() %}
+    <tr>
+      <td>{{show.id}}</td><td>{{show.created}}</td>
+        <td>{{show.base}}</td><td>{{show.url}}</td>
+    </tr>
+  {% endfor %}
+  </table>
+
+	</body>
+</html>
+
+
