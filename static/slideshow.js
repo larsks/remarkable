@@ -6,7 +6,7 @@ function update_location(url) {
 	 */
 	document.getElementById('f_show').src = url;
 
-	locationFrame = document.getElementByID('f_location');
+	locationFrame = document.getElementById('f_location');
 	if (locationFrame) {
 		$("#location", locationFrame.contentDocument).html(
 			'<a href="' + url + '">' + url + '</a>'
