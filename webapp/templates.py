@@ -4,12 +4,22 @@ import os
 import sys
 
 import jinja2
+import markdown
 from jinja2.loaders import FileSystemLoader
 
 from webapp import settings
 
+def filter_markdown (text):
+    return markdown.markdown(text,
+            extensions=[
+                'fenced_code',
+                'headerid',
+                'attr_list',
+                ])
+
 template_env = jinja2.Environment(
         loader = FileSystemLoader(settings.template_dir))
+template_env.filters['markdown'] = filter_markdown
 
 template_globals = {
         'settings': settings,
