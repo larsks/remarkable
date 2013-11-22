@@ -1,8 +1,6 @@
-<!DOCTYPE html>
-<html>
-<head>
-<title>{{title|default("Remarkable")}}</title>
-  <link rel="stylesheet" href="/static/common.css"></link>
+{% extends "base.html" %}
+
+{% block scripts %}
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js">
   </script>
   <script>
@@ -21,8 +19,9 @@ controller.base = "{{base}}";
 controller.url = "{{url}}";
 </script>
 {% endif %}
+{% endblock %}
 
-</head>
+{% block body %}
 {% if mode == 'presenter' %}
 {% set url = '/' %}
 	<frameset rows="80px, 30px, 100%">
@@ -41,5 +40,5 @@ controller.url = "{{url}}";
     <frame src="{{url}}" id="f_show" frameborder="0">
     </frame>
 	</frameset>
-</html>
+{% endblock %}
 

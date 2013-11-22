@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
+  <title>{{title|default("Remarkable Slideshows")}}</title>
+    <!-- everyone gets the common stylesheet -->
+    <link rel="stylesheet" href="/static/common.css"></link>
+
+    {% block css %}
+    {% endblock %}
+
+    <!-- everyone gets jquery -->
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js">
+    </script>
+    {% block scripts %}
+    {% endblock %}
+  </head>
+
+{% block body %}
+
+  <body>
+  {% block content %}
+  {% endblock %}
+  </body>
+
+{% endblock %}
+
+</html>
+

@@ -36,11 +36,21 @@ Compatability
 
 Seems to work with:
 
-- Firefox 25
-- Chrome 31
-- Safari 7
-- Midori 0.5.5
-- 2013.03.30
+- [Firefix][] 25
+- [Chrome][] 31
+- [Safari][] 7
+- [Midori][] 0.5.5
+- [dwb][] 2013.03.30
 
 [remark]: https://github.com/gnab/remark
+[firefox]: http://getfirefox.com/
+[chrome]: http://www.google.com/chrome/
+[midori]: http://midori-browser.org/
+[dwb]: http://portix.bitbucket.org/dwb/
+
+Limitations
+===========
+
+At least in Firefox, Remarkable will not work correctly if you attempt
+to open the same presentation twice in the same browser.
 

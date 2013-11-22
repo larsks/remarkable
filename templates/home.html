@@ -1,24 +1,29 @@
-<!DOCTYPE html>
-<html>
-	<head>            
-		<title>Remarkable Slideshows</title>
-	</head>
-	<body>
+{% extends "base.html" %}
 
-<xmp style="display: none;">
+{% block css %}
+<style>
+body {
+  margin: 4em;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+{% filter markdown %}
 [Remarkable][] is a tool for synchronizing an HTML slideshow among many participants.  While it was originally written to drive slideshows created with [remark][], it will work with any HTML slideshow that uses numeric anchors to address slides (i.e., slides URLs end with `#1`, `#2`, etc.
 
 ## Starting a presentation
 
 1. Connect to <a href="/present" target="_parent">the presenter interface</a>.
 
-1. Select an identifier for your presentation and enter it in the *Name:* field.  This identifier will be used in the URLs that you send out to your audience.
+1. Select an identifier for your presentation and enter it in the
+*Presentation ID* field.  This identifier will be used in the URLs that you send out to your audience.
 
-1. Enter a password in the *Secret:* field to prevent someone else from taking control of the presentation.  If you navigate away from the presentation or close your browser you will need this secret to continue the presentation.
+1. Enter a password in the *Password* field to prevent someone else from taking control of the presentation.  If you navigate away from the presentation or close your browser you will need this secret to continue the presentation.
 
-1. Enter the URL of your presentation in the *Base URL:* field.  This should be the fully qualified URL to your presentation, absent any anchor.
+1. Enter the URL of your presentation in the *Base URL* field.  This should be the fully qualified URL to your presentation, absent any anchor.
 
-1. Click *Create*.
+1. Click <i class="fa fa-play"></i> to start the presentation.
 
 1. Send participants the URL displayed in the *Watch URL:* field.
 
@@ -26,19 +31,15 @@
 
 ## Controlling a presentation
 
-The *Go to Start* button will take your audience to the first slide in
-your presentation.
+- The <i class="fa fa-fast-backward"></i> button will take your audience to the first slide in your presentation.
 
-Use the *+1* and *+5* buttons to move forward in a presentation (and
-the *-1* and *-5* buttons to move backwards).
+- The <i class="fa fa-step-forward"></i> and <i class="fa
+  fa-step-backward"></i> buttons move you to the next or previous slide.
 
-The *Sync Slide* button will set all participants to whatever slide
+- The <i class="fa fa-forward"></i> and <i class="fa fa-backward"></i> buttons move you five slides forward or five slides backward.
+
+- The <i class="fa fa-play"></i> button will set all participants to whatever slide
 number is set in the *Current slide* field.
-
-The *Sync URL* button will set all participants to whatever URL is
-entered in the *Current URL* field.  Note that this will often not
-work as you expect, because many sites may force a browser redirect or
-may simply not work inside an HTML frame.
 
 ## Watching a presentation
 
@@ -57,9 +58,6 @@ presentation).
 </xmp>
 
 <a href="https://github.com/larsks/remarkable"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
-
-  <script src="/static/strapdown/strapdown.js"></script>
-	</body>
-</html>
-
+{% endfilter %}
+{% endblock %}
 
