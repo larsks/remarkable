@@ -1,15 +1,14 @@
-<!DOCTYPE html >
-<html>
-	<head>            
-		<title>Slideshow control</title>
-    <link rel="stylesheet" href="/static/common.css"></link>
+{% extends "base.html" %}
 
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js">
-    </script>
+{% block title %}Slideshow control{% endblock %}
+
+{% block scripts %}
     <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js">
     </script>
     <script src="/static/control.js"></script>
+{% endblock %}
 
+{% block css %}
     <style>
       .panel {
         background-color: #c0c0c0;
@@ -53,11 +52,10 @@
         clear: right;
         display: block;
       }
-
     </style>
-	</head>
-	<body>
+{% endblock %}
 
+{% block content %}
   <div id="container">
     <div id="config_panel" class="panel">
 
@@ -103,6 +101,5 @@
     title="Settings"><i class="fa fa-gear fa-4x"></i></a>
   <span class="clear"/>
 </div>
-	</body>
-</html>
+{% endblock %}
 

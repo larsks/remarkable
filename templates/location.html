@@ -1,8 +1,6 @@
-<!DOCTYPE html>
-<html>
-	<head>            
-		<title>Location bar</title>
-    <link rel="stylesheet" href="/static/common.css"></link>
+{% extends "base.html" %}
+{% block title %}Location bar{% endblock %}
+{% block css %}
     <style>
       body {
         font-family: 'Droid Sans';
@@ -14,11 +12,9 @@
         background-color: white;
       }
     </style>
-	</head>
-	<body>
+{% endblock %}
+{% block content %}
   <div id="location">
   </div>
-	</body>
-</html>
-
+{% endblock %}
 
