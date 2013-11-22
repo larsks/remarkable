@@ -2,7 +2,7 @@
 <html>
   <head>
   <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
-  <title>{{title|default("Remarkable Slideshows")}}</title>
+  <title>{% block title %}{{title|default("Remarkable Slideshows")}}{% endblock %}</title>
     <!-- everyone gets the common stylesheet -->
     <link rel="stylesheet" href="/static/common.css"></link>
 

@@ -4,14 +4,17 @@ var MODE_CONTROL = 1;
 var controller = {
 	'base': null,
 	'slide': 0,
+	'url': null,
 }
 
 function update_location() {
+	controller.url = controller.base + '#' + controller.slide;
+
 	$.ajax({
 		url: "/show/" + controller.id,
 		type: "PUT",
 		data: {
-			"url": controller.base + '#' + controller.slide,
+			"url": controller.url,
 			"secret": controller.secret,
 		},
 		success: function(data) {
@@ -37,9 +40,23 @@ function switch_mode(mode) {
 	$("#message").text("");
 }
 
-function register_presentation(show_id, show_pass, base_url) {
+function start_presentation(show_id, show_pass, base_url, slide) {
 	presentation = window.parent.controller;
 
+	controller.id = show_id;
+	controller.base = base_url;
+	controller.slide = slide;
+	controller.secret = show_pass;
+
+	switch_mode(MODE_CONTROL);
+	update_location();
+
+	presentation.id = show_id;
+	presentation.url = controller.url;
+	parent.postMessage("start", "*");
+}
+
+function register_presentation(show_id, show_pass, base_url) {
 	$.ajax({
 		url: "/show/" + show_id,
 		type: "POST",
@@ -49,19 +66,9 @@ function register_presentation(show_id, show_pass, base_url) {
 		},
 		success: function(data) {
 			if (data['status'] == "created") {
-				controller.id = show_id;
-				controller.base = base_url;
-				controller.slide = 1;
-				controller.secret = show_pass;
-
-				switch_mode(MODE_CONTROL);
-				update_location();
-
-				presentation.id = show_id;
-				presentation.url = base_url;
-				parent.postMessage("start", "*");
+				start_presentation(show_id, show_pass, base_url, 1);
 			} else {
-				message("Unexpected error creating presentation." );
+				message("Unexpected response creating presentation." );
 			}
 		},
 		error: function () {
@@ -70,65 +77,58 @@ function register_presentation(show_id, show_pass, base_url) {
 		dataType: "json",
 	})
 }
-function unregisterSlideshow() {
-	if (! window.parent.slideshowID) {
-		return;
-	}
+
+function unregister_presentation(show_id, show_pass) {
+	presentation = window.parent.controller;
 
 	$.ajax({
-		url: "/show/" + window.parent.slideshowID,
+		url: "/show/" + controller.id,
 		type: "DELETE",
 		data: {
-			"secret": $("#secret").val(),
+			"secret": show_pass,
 		},
 		success: function(data) {
 			if (data['status'] == "deleted") {
-				message("Removed slideshow " + window.parent.slideshowID);
+				message("Removed presentation.");
+				presentation.id = null;
+				controller.id = null;
 			} else {
-				message("Unexpected error removing " + window.parent.slideshowID);
+				message("Unexpected error removing presentation.");
 			}
 		},
 		error: function () {
-			message("Failed to remove slideshow " + window.parent.slideshowID);
-		},
-		complete: function () {
-			window.parent.slideshowID = null;
+			message("Failed to remove slideshow.");
 		},
 		dataType: "json",
 	})
 }
 
-function resumeSlideshow() {
-	window.parent.slideshowID = $("#showname").val();
-
-	if (! window.parent.slideshowID) {
-		return;
-	}
+function resume_presentation(show_id, show_pass) {
+	presentation = window.parent.controller;
 
 	$.ajax({
-		url: "/show/" + window.parent.slideshowID,
+		url: "/show/" + show_id,
 		type: "GET",
 		success: function(data) {
-			url = data['url'];
+			if (data['msg'] == 'info') {
+				url = data['url']
+				base_url = data['base']
 
-			$('#baseurl').val(data['base']);
-			$('#cururl').val(url);
+				if (url.indexOf('#') != -1) {
+					curslide = Number(url.split('#')[1]);
+				} else {
+					curslide = 1;
+				}
 
-			update(url);
-			message("Resumed slideshow " + data['id']
-				+ ". Your participant URL is: "
-				+ "http://" + window.location.hostname + "/watch/" + data['id']);
+				start_presentation(show_id, show_pass, base_url,
+					curslide ? curslide : 1);
 			
-			if (url.indexOf('#') != -1) {
-				curslide = url.split('#')[1];
-				$("#curslide").val(curslide);
-				syncSlide();
 			} else {
-				gotoStart();
+				message("Unexpected response resuming presentation." );
 			}
 		},
 		error: function () {
-			message("Failed to resume slideshow " + window.parent.slideshowID);
+			message("Failed to resume slideshow.");
 		},
 		dataType: "json",
 	})
@@ -186,6 +186,34 @@ function handle_start() {
 	register_presentation(show_id, show_pass, base_url);
 }
 
+function handle_delete() {
+	var show_id = $("#showid").val();
+	var show_pass = $("#password").val();
+
+	if (! show_id) {
+		message("Missing presentation ID.");
+		show_error_field("showid");
+		return;
+	}
+
+	unregister_presentation(show_id, show_pass);
+}
+
+function handle_resume() {
+	var show_id = $("#showid").val();
+	var show_pass = $("#password").val();
+	var base_url = $("#baseurl").val();
+
+	if (! show_id) {
+		message("Missing presentation ID.");
+		show_error_field("showid");
+		return;
+	}
+
+	resume_presentation(show_id, show_pass);
+
+}
+
 function handle_sync() {
 	controller.slide = Number($("#curslide").val());
 	update_location();
@@ -193,6 +221,9 @@ function handle_sync() {
 
 $(function() {
 	$("#start").click(handle_start);
+	$("#resume").click(handle_resume);
+	$("#delete").click(handle_delete);
+
 	$("#config").click(function () {
 		switch_mode(MODE_CONFIG);
 	});

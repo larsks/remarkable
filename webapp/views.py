@@ -22,6 +22,16 @@ def show_stats():
 def default():
     return {}
 
+@app.route('/panel/control')
+@view('control')
+def panel_control():
+    return {}
+
+@app.route('/panel/location')
+@view('location')
+def panel_location():
+    return {}
+
 @app.route('/static/<path:path>')
 def static_asset(path):
     return bottle.static_file(path, settings.static_dir)

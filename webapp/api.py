@@ -98,6 +98,7 @@ def api_query_show(id):
         raise bottle.HTTPError(404)
 
     return json.dumps({
+        'msg': 'info',
         'id': id,
         'base': shows[id]['base'],
         'url': shows[id]['url'],

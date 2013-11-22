@@ -25,14 +25,14 @@ controller.url = "{{url}}";
 {% if mode == 'presenter' %}
 {% set url = '/' %}
 	<frameset rows="80px, 30px, 100%">
-    <frame src="/static/control.html" id="f_control"
+    <frame src="/panel/control" id="f_control"
       scrolling="no"
       frameborder="no">
     </frame>
 {% else %}
 	<frameset rows="30px, 100%">
 {% endif %}
-    <frame src="/static/location.html"
+    <frame src="/panel/location"
       id="f_location"
       scrolling="no"
       frameborder="0">
