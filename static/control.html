@@ -4,62 +4,105 @@
 		<title>Slideshow control</title>
     <link rel="stylesheet" href="/static/common.css"></link>
 
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js">
+    </script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js">
+    </script>
     <script src="/static/control.js"></script>
 
     <style>
-      #message { padding: 1ex; border: thin solid black; margin: 1ex; }
-      #baseurl {width: 100%;}
-      #cururl {width: 100%;}
+      .panel {
+        background-color: #c0c0c0;
+        padding: 5px;
+        height: 80px;
+      }
+
+      #curslide {
+        font-size: 300%;
+        margin: 5px;
+        width: 2em;
+      }
+
+      #baseurl {
+        width: 40em;
+      }
+
+      #message {
+        padding: 5px;
+      }
+       
+      .hspace {margin-left: 2em; margin-right: 2em;}
+      a.button {
+        text-decoration: none;
+        color: inherit;
+        margin-left: 1ex;
+        margin-right: 1ex;
+      }
+
+      i.fa {
+        text-shadow: 3px 3px 3px #aaa;
+      }
+
+      .right {
+        float: right;
+      }
+      .left {
+        float: left;
+      }
+      .clear {
+        clear: right;
+        display: block;
+      }
+
     </style>
 	</head>
 	<body>
-<form>
-  <table>
-    <tr>
-      <td><label for="showname">Name:</label></td>
-      <td><input id="showname" name="showname" type="text" size="15"/></td>
-      <td><label for="secret">Secret:</label></td>
-      <td><input id="secret" name="secret" type="text" size="15"/></td>
-    </tr>
-    <tr>
-      <td><label for="baseurl">Base URL:</label></td>
-      <td colspan="3"><input id="baseurl" name="baseurl" type="text" size="80"/></td>
-    </tr>
-    <tr>
-      <td></td>
-      <td colspan="3">
-  <input type="button" id="create" name="create" value="Create"/>
-  <input type="button" id="resume" name="resume" value="Resume"/>
-  <input type="button" id="delete" name="delete" value="Delete"/>
-</td>
-    </tr>
-    <tr>
-      <td><label for="curslide">Current slide:</label></td>
-      <td><input id="curslide" name="curslide" type="text" size="10"/></td>
-      <td><label for="cururl">Current URL:</label></td>
-      <td><input id="cururl" name="cururl" type="text" size="80"/></td>
-    </tr>
-    <tr>
-      <td></td>
-      <td colspan="3">
-  <input type="button" id="sync_slide" name="sync_url" value="Sync slide"/>
-  <input type="button" id="sync_url" name="sync_slide" value="Sync URL"/>
-  <input type="button" id="start" name="start" value="Go to start"/>
-  <input type="button" id="f1" name="f1" value="+1"/>
-  <input type="button" id="f5" name="f5" value="+5"/>
-  <input type="button" id="b1" name="b1" value="-1"/>
-  <input type="button" id="b5" name="b5" value="-5"/>
-</td>
-    </tr>
 
-  </table>
-</form>
+  <div id="container">
+    <div id="config_panel" class="panel">
 
-  <div id="message">
-  </div>
+    <table class="left">
+      <tr>
+        <td>
+          <input id="showid" placeholder="Presentation ID" />
+          <input id="password" placeholder="Password" />
+          <input id="baseurl" placeholder="Base URL" />
+        </td>
+      </tr>
+      <tr>
+        <td id="message">
+        </td>
+      </tr>
+    </table>
 
+  <span class="right">
+  <a class="button" href="#" id="start" title="Create presentation"><i class="fa fa-play-circle fa-4x"></i></a>
+  <a class="button" href="#" id="delete" title="Delete presentation"><i class="fa fa-times-circle fa-4x"></i></a>
+  <a class="button" href="#" id="resume" title="Resume presentation"><i class="fa fa-repeat fa-4x"></i></a>
+  <a class="button" href="#" id="control"
+    title="Control presentation"><i class="fa fa-gear fa-4x"></i></a>
+</span>
+  <span class="clear"/>
+    </div>
+<div id="navigation_panel" class="panel">
+  <input id="curslide" name="curslide" type="text" />
+  <a class="button" href="#" id="sync"><i class="fa fa-play fa-4x"></i></a>
+  <span class="hspace"></span>
+  <a class="button" href="#" id="first"
+    title="First slide"><i class="fa fa-fast-backward fa-4x"></i></a>
+  <a class="button" href="#" id="b5"
+    title="Move 5 previous"><i class="fa fa-backward fa-4x"></i></a>
+  <a class="button" href="#" id="b1"
+    title="Previous slide"><i class="fa fa-step-backward fa-4x"></i></a>
+  <a class="button" href="#" id="f1"
+    title="Next slide"><i class="fa fa-step-forward fa-4x"></i></a>
+  <a class="button" href="#" id="f5"
+    title="Move 5 next"><i class="fa fa-forward fa-4x"></i></a>
+
+  <a class="button right" href="#" id="config"
+    title="Settings"><i class="fa fa-gear fa-4x"></i></a>
+  <span class="clear"/>
+</div>
 	</body>
 </html>
 

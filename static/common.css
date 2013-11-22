@@ -1,4 +1,6 @@
+@import url(/static/normalize.css);
 @import url(http://fonts.googleapis.com/css?family=Droid+Sans);
+@import url(/static/font-awesome/css/font-awesome.min.css);
 
 body {
 	font-family: 'Droid Sans', Helvetica, sans;

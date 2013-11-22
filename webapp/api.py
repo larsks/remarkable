@@ -68,6 +68,10 @@ def query_worker(id, q, rfile):
     s.close()
     q.put(StopIteration)
 
+@app.route('/show/ping')
+def api_ping():
+    return {'msg': 'pong'}
+
 @app.route('/show/<id>/poll')
 def api_poll_show(id):
     global shows

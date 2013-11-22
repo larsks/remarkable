@@ -32,10 +32,12 @@ def watch_show(id):
     if not id in api.shows:
         raise bottle.HTTPError(404)
 
-    return api.shows[id]
+    vars = { 'mode': 'viewer' }
+    vars.update(api.shows[id])
+    return vars
 
 @app.route('/present', name='present')
-@view('present')
+@view('slideshow')
 def present():
-    return {}
+    return { 'mode': 'presenter' }
 

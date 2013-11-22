@@ -1,15 +1,21 @@
-var slideNumber;
+var MODE_CONFIG = 0;
+var MODE_CONTROL = 1;
 
-function update(url) {
+var controller = {
+	'base': null,
+	'slide': 0,
+}
+
+function update_location() {
 	$.ajax({
-		url: "/show/" + window.parent.slideshowID,
+		url: "/show/" + controller.id,
 		type: "PUT",
 		data: {
-			"url": url,
-			"secret": $("#secret").val(),
+			"url": controller.base + '#' + controller.slide,
+			"secret": controller.secret,
 		},
 		success: function(data) {
-			$('#cururl').val(data['url']);
+			$('#curslide').val(controller.slide);
 		},
 		dataType: "json",
 	})
@@ -20,26 +26,46 @@ function message(msg) {
 	$('#message').effect('highlight', {}, 3000);
 }
 
-function registerSlideshow() {
-	window.parent.slideshowID = $("#showname").val();
+function switch_mode(mode) {
+	if (mode == MODE_CONFIG) {
+		$("#config_panel").css("display", "block");
+		$("#navigation_panel").css("display", "none");
+	} else {
+		$("#config_panel").css("display", "none");
+		$("#navigation_panel").css("display", "block");
+	}
+	$("#message").text("");
+}
+
+function register_presentation(show_id, show_pass, base_url) {
+	presentation = window.parent.controller;
 
 	$.ajax({
-		url: "/show/" + window.parent.slideshowID,
+		url: "/show/" + show_id,
 		type: "POST",
 		data: {
-			"url": $("#baseurl").val(),
-			"secret": $("#secret").val(),
+			"url": base_url,
+			"secret": show_pass,
 		},
 		success: function(data) {
 			if (data['status'] == "created") {
-				message("Created slideshow " + window.parent.slideshowID);
-				gotoStart();
+				controller.id = show_id;
+				controller.base = base_url;
+				controller.slide = 1;
+				controller.secret = show_pass;
+
+				switch_mode(MODE_CONTROL);
+				update_location();
+
+				presentation.id = show_id;
+				presentation.url = base_url;
+				parent.postMessage("start", "*");
 			} else {
-				message("Unexpected error creating " + window.parent.slideshowID);
+				message("Unexpected error creating presentation." );
 			}
 		},
 		error: function () {
-				message("Failed to create slideshow " + window.parent.slideshowID);
+				message("Failed to create slideshow.");
 		},
 		dataType: "json",
 	})
@@ -89,7 +115,9 @@ function resumeSlideshow() {
 			$('#cururl').val(url);
 
 			update(url);
-			message("Resumed slideshow " + window.parent.slideshowID);
+			message("Resumed slideshow " + data['id']
+				+ ". Your participant URL is: "
+				+ "http://" + window.location.hostname + "/watch/" + data['id']);
 			
 			if (url.indexOf('#') != -1) {
 				curslide = url.split('#')[1];
@@ -120,44 +148,66 @@ function syncSlide() {
 }
 
 function gotoStart() {
-	slideNumber=1;
-	$("#curslide").val(slideNumber);
-	baseurl=$("#baseurl").val();
-	update(baseurl + "#1");
+	controller.slide = 1;
+	update_location();
 }
 
 function goForward(num) {
-	baseurl=$("#baseurl").val();
-
-	if (! slideNumber) {
-		slideNumber = 0;
-	}
-
-	slideNumber += num;
-	$("#curslide").val(slideNumber);
-	update(baseurl + "#" + slideNumber);
+	controller.slide+=num;
+	update_location();
 }
 
 function goBackward(num) {
-	if (! slideNumber)
-		return;
-
-	slideNumber = Math.max(1, slideNumber-num);
-	$("#curslide").val(slideNumber);
-	update(baseurl + "#" + slideNumber);
+	controller.slide = Math.max(1, controller.slide-num);
+	update_location();
 }
 
+function show_error_field (id) {
+	$('#' + id).effect('highlight', {"color": "#FF3D3D"}, 3000);
+}
+
+function handle_start() {
+	var show_id = $("#showid").val();
+	var show_pass = $("#password").val();
+	var base_url = $("#baseurl").val();
+
+	if (! show_id) {
+		message("Missing presentation ID.");
+		show_error_field("showid");
+		return;
+	}
+
+	if (! base_url) {
+		message("Missing base URL.");
+		show_error_field("baseurl");
+		return;
+	}
+
+	register_presentation(show_id, show_pass, base_url);
+}
+
+function handle_sync() {
+	controller.slide = Number($("#curslide").val());
+	update_location();
+}
 
 $(function() {
-	$('#create').click(registerSlideshow);
-	$('#delete').click(unregisterSlideshow);
-	$('#resume').click(resumeSlideshow);
-	$('#sync_url').click(syncURL);
-	$('#sync_slide').click(syncSlide);
-	$('#start').click(gotoStart);
-	$('#f1').click(function() {goForward(1);});
-	$('#b1').click(function() {goBackward(1);});
-	$('#f5').click(function() {goForward(5);});
-	$('#b5').click(function() {goBackward(5);});
+	$("#start").click(handle_start);
+	$("#config").click(function () {
+		switch_mode(MODE_CONFIG);
+	});
+	$("#control").click(function () {
+		switch_mode(MODE_CONTROL);
+	});
+
+	$("#sync").click(handle_sync);
+	$("#first").click(gotoStart);
+	$("#f1").click(function () {goForward(1)});
+	$("#f5").click(function () {goForward(5)});
+	$("#b1").click(function () {goBackward(1)});
+	$("#b5").click(function () {goBackward(5)});
+
+	$("#navigation_panel").css("display", "none");
+	message("Welcome to Remarkable.");
 });
 
