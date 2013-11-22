@@ -48,6 +48,9 @@ function start_presentation(show_id, show_pass, base_url, slide) {
 	controller.slide = slide;
 	controller.secret = show_pass;
 
+	watch_url = location.protocol + '//' + location.host + '/watch/' + show_id;
+	$("#watchurl").html('Watch URL: <a href="' + watch_url + '">' + watch_url + '</a>');
+
 	switch_mode(MODE_CONTROL);
 	update_location();
 
