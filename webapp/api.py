@@ -3,13 +3,14 @@
 import sys
 import time
 import json
+from contextlib import contextmanager
 
 import bottle
 from zmq import green as zmq
 import gevent
 from gevent import queue
 
-from webapp import app, stats
+from webapp import app, stats, settings
 
 ctx = zmq.Context()
 shows = {}
@@ -27,19 +28,31 @@ def delete_show(id):
 
     del shows[id]
 
-def query_worker(id, q, rfile):
-    global shows
+@contextmanager
+def subcontext(id):
+    global ctx
 
     s = ctx.socket(zmq.SUB)
     s.setsockopt(zmq.SUBSCRIBE, '')
     s.connect('inproc://%s' % id)
-    
-    poll = zmq.Poller()
-    poll.register(s, zmq.POLLIN)
-    poll.register(rfile, zmq.POLLERR|zmq.POLLIN)
 
-    try:
-        stats.polling += 1
+    yield s
+
+    s.close()
+
+@contextmanager
+def pollcounter():
+    stats.polling += 1
+    yield
+    stats.polling -= 1
+
+def query_worker(id, rfile):
+    global shows
+
+    with subcontext(id) as s, pollcounter() as pc:
+        poll = zmq.Poller()
+        poll.register(s, zmq.POLLIN)
+        poll.register(rfile, zmq.POLLERR|zmq.POLLIN)
 
         while True:
             events = dict(poll.poll())
@@ -47,26 +60,20 @@ def query_worker(id, q, rfile):
             if rfile.fileno() in events:
                 break
 
-            if s in events:
-                msg = s.recv_json()
+            msg = s.recv_json()
 
-                if msg['msg'] == 'close':
-                    break
-                elif msg['msg'] != 'update':
-                    continue
-
-                q.put( json.dumps({
-                    'msg': 'update',
-                    'id': id,
-                    'url': msg['url'],
-                    }))
-
+            if msg['msg'] == 'close':
                 break
-    finally:
-        stats.polling -= 1
+            elif msg['msg'] != 'update':
+                continue
 
-    s.close()
-    q.put(StopIteration)
+            yield( json.dumps({
+                'msg': 'update',
+                'id': id,
+                'url': msg['url'],
+                }))
+
+            break
 
 @app.route('/show/ping')
 def api_ping():
@@ -78,17 +85,14 @@ def api_poll_show(id):
 
     # On OpenShift this method will be called using an alternate
     # port so we need to add a CORS header.
-    bottle.response.headers.update({
-            'Access-Control-Allow-Origin': '*',
-            })
+    if settings.using_openshift:
+        bottle.response.headers['Access-Control-Allow-Origin'] = '*'
 
     if not id in shows:
         raise bottle.HTTPError(404)
 
-    q = queue.Queue()
-    task = gevent.spawn(query_worker, id, q,
-            bottle.request.environ['wsgi.input'].rfile)
-    return q
+    rfile = bottle.request.environ['wsgi.input'].rfile
+    return query_worker(id, rfile)
 
 @app.route('/show/<id>', method='GET')
 def api_query_show(id):
