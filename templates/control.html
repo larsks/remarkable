@@ -9,61 +9,14 @@
 {% endblock %}
 
 {% block css %}
-    <style>
-      .panel {
-        background-color: #c0c0c0;
-        padding: 5px;
-        height: 80px;
-      }
-
-      #watchurl {
-        padding: 2px;
-      }
-
-      #curslide {
-        font-size: 300%;
-        margin: 5px;
-        width: 2em;
-      }
-
-      #baseurl {
-        width: 40em;
-      }
-
-      #message {
-        padding: 5px;
-      }
-       
-      .hspace {margin-left: 2em; margin-right: 2em;}
-      a.button {
-        text-decoration: none;
-        color: inherit;
-        margin-left: 1ex;
-        margin-right: 1ex;
-      }
-
-      i.fa {
-        text-shadow: 3px 3px 3px #aaa;
-      }
-
-      .right {
-        float: right;
-      }
-      .left {
-        float: left;
-      }
-      .clear {
-        clear: right;
-        display: block;
-      }
-    </style>
+    <link href="/static/control.css" rel="stylesheet"></link>
 {% endblock %}
 
 {% block content %}
-  <div id="container">
-    <div id="config_panel" class="panel">
 
-    <table class="left">
+<div id="container">
+  <div id="config_panel" class="panel">
+    <table class="leftcontrols">
       <tr>
         <td>
           <input id="showid" placeholder="Presentation ID" />
@@ -72,41 +25,59 @@
         </td>
       </tr>
       <tr>
-        <td id="message">
-        </td>
+        <td id="message"></td>
       </tr>
     </table>
-
-  <span class="right">
-  <a class="button" href="#" id="start" title="Create presentation"><i class="fa fa-play-circle fa-4x"></i></a>
-  <a class="button" href="#" id="delete" title="Delete presentation"><i class="fa fa-times-circle fa-4x"></i></a>
-  <a class="button" href="#" id="resume" title="Resume presentation"><i class="fa fa-repeat fa-4x"></i></a>
-  <a class="button" href="#" id="control"
-    title="Control presentation"><i class="fa fa-gear fa-4x"></i></a>
-</span>
-  <span class="clear"/>
+    <div class="rightcontrols">
+      <a class="button" href="#" id="start"
+      title="Create presentation">
+        <i class="fa fa-play-circle fa-3x"></i>
+      </a>
+      <a class="button" href="#" id="delete"
+      title="Delete presentation">
+        <i class="fa fa-times-circle fa-3x"></i>
+      </a>
+      <a class="button" href="#" id="resume"
+      title="Resume presentation">
+        <i class="fa fa-repeat fa-3x"></i>
+      </a>
+      <a class="button" href="#" id="control"
+      title="Control presentation">
+        <i class="fa fa-gear fa-3x"></i>
+      </a>
     </div>
-<div id="navigation_panel" class="panel">
-  <input id="curslide" name="curslide" type="text" />
-  <a class="button" href="#" id="sync"><i class="fa fa-play fa-4x"></i></a>
-  <span class="hspace"></span>
-  <a class="button" href="#" id="first"
-    title="First slide"><i class="fa fa-fast-backward fa-4x"></i></a>
-  <a class="button" href="#" id="b5"
-    title="Move 5 previous"><i class="fa fa-backward fa-4x"></i></a>
-  <a class="button" href="#" id="b1"
-    title="Previous slide"><i class="fa fa-step-backward fa-4x"></i></a>
-  <a class="button" href="#" id="f1"
-    title="Next slide"><i class="fa fa-step-forward fa-4x"></i></a>
-  <a class="button" href="#" id="f5"
-    title="Move 5 next"><i class="fa fa-forward fa-4x"></i></a>
-
-  <span id="watchurl">
-  </span>
-
-  <a class="button right" href="#" id="config"
-    title="Settings"><i class="fa fa-gear fa-4x"></i></a>
-  <span class="clear"/>
+  </div>
+  <div id="navigation_panel" class="panel">
+    <div class="leftcontrols">
+      <input id="curslide" name="curslide" type="text" />
+      <a class="button" href="#" id="sync">
+        <i class="fa fa-play fa-3x"></i>
+      </a>
+      <span class="hspace"></span>
+      <a class="button" href="#" id="first" title="First slide">
+        <i class="fa fa-fast-backward fa-3x"></i>
+      </a>
+      <a class="button" href="#" id="b5" title="Move 5 previous">
+        <i class="fa fa-backward fa-3x"></i>
+      </a>
+      <a class="button" href="#" id="b1" title="Previous slide">
+        <i class="fa fa-step-backward fa-3x"></i>
+      </a>
+      <a class="button" href="#" id="f1" title="Next slide">
+        <i class="fa fa-step-forward fa-3x"></i>
+      </a>
+      <a class="button" href="#" id="f5" title="Move 5 next">
+        <i class="fa fa-forward fa-3x"></i>
+      </a>
+    </div>
+    <div class="rightcontrols">
+      <a class="button" href="#" id="config"
+      title="Settings">
+        <i class="fa fa-gear fa-3x"></i>
+      </a>
+    </div>
+  </div>
 </div>
+
 {% endblock %}
 

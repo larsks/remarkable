@@ -1,0 +1,69 @@
+body, html {
+	height: 100%;
+}
+
+#container {
+	height: 100%;
+	background-color: #c0c0c0;
+}
+
+.panel {
+	padding: 0.5em;
+	height: 4em;
+}
+
+#watchurl {
+	padding: 2px;
+}
+
+#curslide {
+	font-size: 2em;
+	width: 2em;
+	margin: 0;
+}
+
+#baseurl {
+	width: 40em;
+}
+
+#message {
+	padding: 5px;
+}
+
+.hspace {margin-left: 2em; margin-right: 2em;}
+a.button {
+	text-decoration: none;
+	color: inherit;
+	margin-left: 1ex;
+	margin-right: 1ex;
+}
+
+i.fa {
+	text-shadow: 3px 3px 3px #aaa;
+}
+
+.right {
+	float: right;
+}
+.left {
+	float: left;
+}
+.clear {
+	clear: right;
+	display: block;
+}
+
+.rightcontrols {
+	position: absolute;
+	top: 1em;
+	right: 1em;
+
+}
+
+.leftcontrols {
+	position: absolute;
+	top: 1em;
+	left: 1em;
+	max-width: 80%;
+}
+
