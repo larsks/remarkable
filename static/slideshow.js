@@ -39,40 +39,38 @@ function poll() {
 
 	poller = $.ajax({
 		url: xurl,
-	       type: "GET",
-	       success: function(data) {
-		       if (data['msg'] == 'update') {
-			       controller.url = data['url'];
-			       update_location();
-		       }
-		       controller.state = 1;
-	       },
-	       error: function() {
-		       controller.state = 0;
-		       pollInterval=2000;
-	       },
-	       complete: function () {
-		       poller = null;
-		       if (controller.state) {
-			       poll();
-		       } else {
-			       setTimeout(poll, 2000);
-		       }
-	       },
-	       dataType: "json",
-	       timeout: 60000
+		type: "GET",
+		success: function(data) {
+			if (data['msg'] == 'update') {
+				controller.url = data['url'];
+				update_location();
+			}
+			controller.state = 1;
+		},
+		error: function() {
+			controller.state = 0;
+			pollInterval=2000;
+		},
+		complete: function () {
+			poller = null;
+			if (controller.state) {
+				poll();
+			} else {
+				setTimeout(poll, 2000);
+			}
+		},
+		dataType: "json",
+		timeout: 60000
 	})
 }
 
-
 $(function () {
+	eventer(messageEvent,function(e) {
+		console.log('parent received message!:  ',e.data);
+		if (poller) poller.abort();
+		update_location();
+	},false);
 
-  eventer(messageEvent,function(e) {
-    console.log('parent received message!:  ',e.data);
-    if (poller) poller.abort();
-    update_location();
-  },false);
-
-  poll();
+	poll();
 });
 
